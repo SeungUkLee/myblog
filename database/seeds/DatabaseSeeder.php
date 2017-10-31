@@ -57,14 +57,16 @@ class DatabaseSeeder extends Seeder
         });
         $this->command->info('posts table seeded');
 
-        $faker = new Faker\Generator;
+        $faker = Faker\Factory::create(); // 팩토리 패턴으로 create() 메서드 사용?
         $posts = App\Post::get();
         $tagIds = App\Tag::pluck('id')->toArray();
 
         // attach tags
         DB::table('post_tag')->truncate();
         foreach ($posts as $post) {
-            $post->tags()->sync([1,2]);
+            $post->tags()->sync(
+                $faker->randomElements($tagIds, rand(1, 2))
+            );
         }
         $this->command->info('tags pivot table seeded');
 
