@@ -26,7 +26,7 @@ class PostsRequest extends FormRequest
         return [
             'title' => ['required', 'min:2'],
             'content' => ['required', 'min:10'],
-            'tags' => ['required', 'array']
+            'tags' => ['required', 'array', 'exists:tags,id']
         ];
     }
 }

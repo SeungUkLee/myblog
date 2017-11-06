@@ -121,6 +121,9 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
+        // 사용자 인가
+        $this->authorize('delete', $post);
+
         // 모델을 삭제한다.
         $post->delete();
 

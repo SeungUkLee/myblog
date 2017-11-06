@@ -11,7 +11,7 @@
     </ul>
 
     <article>
-        {{ $post->content }}
+        {!! markdown($post->content) !!}
     </article>
     
     <ul>
@@ -44,6 +44,10 @@
     <script>
         new Vue({
             el: 'body',
+
+            ready: function () {
+                hljs.initHighlightingOnLoad();
+            },
 
             methods: {
                 deletePost: function (e) {

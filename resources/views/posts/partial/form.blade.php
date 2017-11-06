@@ -9,8 +9,9 @@
 </div>
 
 <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
-    <label for="tags">Content</label>
+    <label for="tags">Tags</label>
     <select id="tags" type="tags" class="form-control" name="tags[]" multiple="multiple">
+        <option disabled>Select one</option>
         @foreach ($allTags as $tag)
             <option value="{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'selected="selected"' : '' }}>
                 {{ $tag->name }}
@@ -25,10 +26,8 @@
 </div>
 
 <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-    <label for="content">Title</label>
-            <textarea name="content" id="content" rows="10" class="form-control">
-                {{ $post->content or old('content') }}
-            </textarea>
+    <label for="content">Content</label>
+        <textarea name="content" id="content" rows="10" class="form-control">{{ $post->content or old('content') }}</textarea>
     @if ($errors->has('content'))
         <span class="help-block">
             <strong>{{ $errors->first('content') }}</strong>
