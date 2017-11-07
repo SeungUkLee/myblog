@@ -26,7 +26,7 @@ class PostsRequest extends FormRequest
         return [
             'title' => ['required', 'min:2'],
             'content' => ['required', 'min:10'],
-            'tags' => ['required', 'array', 'exists:tags,id']
+            'tags' => ['required', 'array', 'exists:tags,id'] // exists : 사용자가 넘긴 tags가 db에 있는지 유효성 검사
         ];
     }
 }

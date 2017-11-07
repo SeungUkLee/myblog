@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostsRequest;
 use \App\Post;
+use App\Queries\PostsQuery;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
@@ -20,12 +21,7 @@ class PostsController extends Controller
      */
     public function index($slug = null)
     {
-        $model = \App\Tag::pluck('slug')->contains($slug)
-            ? \App\Tag::whereSlug($slug)->first()->posts()
-            : new Post;
-
-        // with 로 N+1 문제 해결
-        $posts = $model->with('user')->latest()->paginate(3);
+        $posts = (new PostsQuery)->fetch($slug);
 
         return view('posts.index', compact('posts'));
     }
@@ -57,6 +53,7 @@ class PostsController extends Controller
         $post = $request->user()->posts()->create($request->all()); // 대량 할당 ($fillable) 때문에 all()을 써도 무관
         $post->tags()->sync($request->input('tags'));
 
+        flash('Post saved!', 'success');
         // 방금 만든 포스트의 상세보기 페이지로 이동
         return redirect(route('posts.show', $post->id));
     }
@@ -108,6 +105,8 @@ class PostsController extends Controller
         // 데이터베이스 레코드를 업데이트
         $post->update($request->all());
         $post->tags()->sync($request->input('tags'));
+
+        flash('Post updated!', 'success');
 
         // 해당 모델로 상세보기 페이지로 이동한다.
         return redirect(route('posts.show', $post->id));

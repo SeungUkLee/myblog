@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Queries;
+
+use App\Post;
+use App\Tag;
+
+class PostsQuery {
+    /**
+     * @param $slug
+     * @return mixed
+     */
+    public function fetch($slug) {
+        $model = Tag::pluck('slug')->contains($slug)
+            ? Tag::whereSlug($slug)->first()->posts()
+            : new Post;
+        // with 로 N+1 문제 해결
+        return $model->with('user')->orderBy('id', 'desc')->latest()->paginate(3);
+    }
+}

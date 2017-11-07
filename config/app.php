@@ -167,7 +167,8 @@ return [
          * Package Service Providers...
          */
 
-        //
+        // flash message 추가
+        Laracasts\Flash\FlashServiceProvider::class,
 
         /*
          * Application Service Providers...
