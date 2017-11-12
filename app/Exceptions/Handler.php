@@ -44,6 +44,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if(app()->environment('production')) {
+            $title = 'Error :( ';
+            $feedback = 'Unknown Error';
+            // 상태코드 추가
+            $statusCode = $exception->getCode() ?: 400;
+            
+            if ($exception instanceof AuthenticationException) {
+                $title = 'Unauthorized';
+                $feedback = 'You are not allowed to access this resource';
+            }
+
+            return response(
+                view('errors.notice', compact('title', 'feedback')),
+                $statusCode
+            );
+        }
+
         return parent::render($request, $exception);
     }
 

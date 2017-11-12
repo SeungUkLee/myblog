@@ -1,4 +1,6 @@
 .idea
+.phpstorm.meta.php
+.ide_helper.php
 /node_modules
 /public/storage
 /storage/*.key
@@ -7,3 +9,4 @@
 Homestead.json
 Homestead.yaml
 .env
+database/database.sqlite

@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 7.0
+
+sudo: false
+
+install:
+  - composer self-update
+  - travis_retry composer install --no-interaction --no-scripts --prefer-source --dev
+
+before_script:
+  - TRAVIS=true
+  - chmod 775 storage bootstrap/cache
+  - touch database/database.sqlite
+  - cp .env.example .env
+  - php artisan clear-compiled --verbose
+  - php artisan optimize --force --verbose
+  - php artisan cache:clear --verbose
+  - php artisan migrate --env=testing --database=sqlite --force --verbose
+  - php artisan db:seed --class=TagsTableSeeder --env=testing --database=sqlite --force --verbose
+
+script: vendor/bin/phpunit
+
+matrix:
+  fast_finish: true

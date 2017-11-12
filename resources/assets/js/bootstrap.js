@@ -1,5 +1,6 @@
 
 window._ = require('lodash');
+window.Cookies = require('js-cookie');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -25,11 +26,17 @@ require('vue-resource');
  * included with Laravel will automatically verify the header's value.
  */
 
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
+Vue.http.interceptors.push(function (request, next) {
+    request.headers['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN');
 
     next();
 });
+
+// Vue.http.interceptors.push((request, next) => {
+//     request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
+//
+//     next();
+// });
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
